@@ -1,0 +1,224 @@
+{% load static %}
+{% load mathfilters %}
+{% load humanize %}
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="author" content="colorlib.com">
+
+    <link href="{% static 'css/search/main2.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">		
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/search/main.css' %}" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div class="s002">
+      <form>
+        <div class="inner-form">
+			<!-- team -->
+			<div class="input-field first-wrap">
+				<div class="icon-wrap">
+	
+				</div>
+				
+					<input class="search" type='text' id='search' placeholder="ค้นหาสินค้า" name="q"
+					value='{{ request.GET.q}}'>
+				</div>
+				<div class="input-field second-wrap">
+					<input class="datepicker" placeholder="ค้นหาวันที่" id="theDate"  type=date defaultvalue="theDate" name="start_date" value="{{ request.GET.start_date}}" type="text"  />
+				</div>
+				<div class="input-field third-wrap">
+					<input class="datepicker" id="theDate"  type=date defaultvalue="theDate"  name="end_date" value="{{ request.GET.end_date}}" type="text" placeholder="ถึงวันที่" />
+				</div>
+					<div class="input-field fifth-wrap">
+
+						<button class="btn-search" type='submit'>ค้นหา</button>
+			
+					  </div>
+					</div>
+					<input class="search" type='text' id='search' placeholder="เบอร์ลูกค้า" name="a"
+					value='{{ request.GET.a}}'>
+
+					<input class="search" type='text' id='search' placeholder="แบรนด์สินค้า" name="g"
+					value='{{ request.GET.g}}'>
+
+					<input class="search" type='text' id='search' placeholder="ที่อยู่ลูกค้า" name="c"
+					value='{{ request.GET.c}}'>
+
+					<input class="search" type='text' id='search' placeholder="เลข Invoice" name="d"
+					value='{{ request.GET.d}}'>
+					
+					<select  name="b" value="{{ request.GET.b}}">
+						<option value="" default>พิพม์หรือยัง</option>
+						{% if  request.GET.b == 'True' %}
+						<option value="True" selected>พิพม์แล้ว</option>
+						{% else %}
+						<option value="True" >พิพม์แล้ว</option>
+						{% endif %}
+			  
+						{% if  request.GET.b == 'False' %}
+						<option value="False" selected>ยังไม่ได้พิพม์</option></select>
+						{% else %}
+						<option value="False">ยังไม่ได้พิพม์</option></select>
+						{% endif %}
+					
+
+					<select  name="e" value="{{ request.GET.e}}">
+						<option value="" default>ยกเลิก invoice</option>
+						{% if  request.GET.e == 'True' %}
+						<option value="True" selected>ยกเลิก</option>
+						{% else %}
+						<option value="True" >ยกเลิก</option>
+						{% endif %}
+				
+						{% if  request.GET.e == 'False' %}
+						<option value="False" selected>ยังไม่ยกเลิก</option></select>
+						{% else %}
+						<option value="False">ยังไม่ยกเลิก</option></select>
+						{% endif %}
+<br>
+						<input class="datepicker" id="theDate"  type=date defaultvalue="theDate"  name="h" value="{{ request.GET.h}}" type="text" placeholder="จากวันที่แก้ไข" />
+						<input class="datepicker" id="theDate"  type=date defaultvalue="theDate"  name="i" value="{{ request.GET.i}}" type="text" placeholder="ถึงวันที่" />
+				</form>
+
+      
+
+</div>
+ยอดเปิดบิล: {{summary.total_a|floatformat:2|intcomma}}<br>
+<style>
+	table, th, td {
+	  border: 1px  solid gray;
+	  border-collapse: collapse;
+	  margin: auto;
+	}
+	td {
+	  width: 100%;
+	}
+	th {
+	  text-align: center;
+	}
+	</style>
+				<div>
+				<h1>รายการคำสั่งซื้อ</h1>
+					<table  style="border-style: none; font-size: small;" >
+					<tr>
+						
+						<th style="width: 2%;">ได้รับบิลซื้อหรือยัง</th>
+						<th style="width: 2%;">วันที่ update บิล</th>
+						<th style="width: 2%;">Brand</th>
+						<th style="width: 2%;">วันที่สร้าง</th>
+						<th style="width: 2%;">inovice ซื้อ</th>
+						<th style="width: 2%;">เลข Invoice</th>
+						<th style="width: 2%;">ชื่อ</th>
+						<th>เบอร์โทร</th>
+						<th >ที่อยู่</th>
+						<th >ชื่อสินค้า</th>
+						<th>ใบเสร็จต้นฉบับ</th>
+						<th>ใบเสร็จสำเนา</th>
+						<th>ยกเลิก/ลดหนี้</th>
+						<th style="width: 3%;">E-mail</th>
+						<!-- <th>ใบสั่งซื้อ</th> -->
+					</tr>
+					{% for i in object_list %}
+					<tr>
+						
+						{% if i.name.paid %}
+						<td style="width: 2%; color: green; text-align: center;">ได้รับแล้ว</td>
+						{% else %}
+						<td style="width: 2%; color: red; text-align: center;">ยังไม่ได้รับ</td>
+						{% endif %}
+						<td style="width: 2%;  text-align: center;">{{i.name.updated}}</td>
+						<td style="width: 2%;  text-align: center;">{{i.brand}}</td>
+						<td style="width: 2%;  text-align: center;">{{i.name.created.date}}</td>
+						<td style="width: 2%; text-align: left;">{{i.name.invoice_eve}} </td>
+						{% if i.name.count_invoice_number %}
+						<td style="width: 2%; text-align: center;">{{i.name.count_invoice_number}}/{{i.name.invoice_date.day}}{{i.name.invoice_date.month}}{{i.name.invoice_date.year|sub:"2000"}}</td>
+						{% else %}
+						<td style="width: 2%; text-align: center;">{{i.name.id}}/{{i.name.created.day}}{{i.name.created.month}}{{i.name.created.year|sub:"2000"}}</td>
+						{% endif %}
+						{% if i.name_invoce %}
+						<td style="width: 4%; text-align: left;">{{i.name.name_invoce}} </td>
+						{% else %}
+						<td style="width: 4%; text-align: left;">{{i.name.name}} </td>
+						{% endif %}
+						<td style="width: 2%; text-align: left;"><a href="{{i.name.pk}}">{{i.name.tel_number}}</a></td>
+						{% if i.name.address_invoice %}
+						<td style="width: 15%; text-align: left;">{{i.name.address_invoice}}</td>
+						{% else %}
+						<td style="width: 15%; text-align: left;">{{i.name.address}}</td>
+						{% endif %}
+						<td style="width: 15%; text-align: left;">{{i.product}}</td>
+						{% if i.name.etax %}
+						<td style="width: 5%; text-align: center;"><a href="{{ i.name.get_etax_done }}" target="_blank">ข้อมูล</a></td>
+						{% else %}
+						<td style="width: 5%; text-align: center;"><a href="{{ i.name.get_absolute_url }}" target="_blank">ต้นฉบับ</a></td>
+						{% endif %}
+
+						{% if i.name.etax %}
+						<td style="width: 5%; text-align: center;"></td>
+						{% else %}
+						<td style="width: 5%; text-align: center;"><a href="{{ i.name.get_secondary }}" target="_blank">สำเนา</td>
+						{% endif %}
+
+						{% if i.name.cancel_inv %}
+						<td style="width: 1%; text-align: center;"><a href="{{ i.name.get_cancel }}" target="_blank">ยกเลิก</td>
+						{% else %}
+						<td style="width: 1%; text-align: left;"></td>
+						{% endif %}
+						<td style="width: 3%; text-align: center;">{{i.name.email_addess}}</td>
+					</tr>
+					{% endfor %}
+					</table>
+				</div>
+			</div>
+			<div style="text-align: center;">
+				{% load filtersummary %}
+				{% if page_obj.has_other_pages %}
+			<ul class="pagination">
+			{% if page_obj.has_previous %}
+			  <li><a href="{% summary_url 1 'page' request.GET.urlencode %}"><i class="fas fa-angle-double-left"></i></a></li>
+			  <li><a href="{% summary_url page_obj.previous_page_number 'page' request.GET.urlencode %}"><i class="fas fa-angle-left"></i></a></li>
+			{% else %}
+			  <li class="disabled"><span><i class="fas fa-angle-double-left"></i></span></li>
+			  <li class="disabled"><span><i class="fas fa-angle-left"></i></span></li>
+			{% endif %}
+			{% for i in page_obj.paginator.page_range %}
+			  {% if page_obj.number == i %}
+				<li class="active"><span style="background-color:red;">{{ i }} <span class="sr-only">(current)</span></span></li>
+			  {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'4' %}
+			
+				<li><a href="{% summary_url i 'page' request.GET.urlencode %}">{{ i }}</a></li>
+			  {% endif %}
+			{% endfor %}
+			{% if page_obj.has_next %}
+			  <li><a href="{% summary_url page_obj.next_page_number 'page' request.GET.urlencode %}"><i class="fas fa-angle-right"></i></a></li>
+			  <li><a href="{% summary_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}"><i class="fas fa-angle-double-right"></i></i></a></li>
+			{% else %}
+			  <li class="disabled"><span><i class="fas fa-angle-right"></i></span></li>
+			  <li class="disabled"><span><i class="fas fa-angle-double-right"></i></i></span></li>
+			{% endif %}
+			</ul>
+			{% endif %}
+			</div>
+	    <script src="{% static 'js/search/choices.js' %}"></script>
+    <script src="{% static 'js/search/flatpickr.js' %}"></script>
+    <script>
+      flatpickr(".datepicker",
+      {});
+
+    </script>
+    <script>
+      const choices = new Choices('[data-trigger]',
+      {
+        searchEnabled: false,
+        itemSelectText: '',
+      });
+
+    </script>
+		</html>
+

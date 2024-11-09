@@ -1,0 +1,104 @@
+{% extends "index.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<link href="{% static 'css/product_list.css' %}" rel="stylesheet">
+<link href="{% static 'css/search.css' %}" rel="stylesheet">
+<form class='form' method='GET' action='{% url 'product_list'  %}' style="margin-left: 20px; padding-top: 10px;">
+	<input class="search" type='text' id='search' placeholder="ค้นหาสินค้า" name="name"
+	value='{{ request.GET.name}}'>
+	<hidden><button type='submit' style="display: none "></button><br>
+	<a href="{% url 'product_list'  %}">ยกเลิก</a>
+</form><br>
+<div class="container">
+
+					<!-- default heading -->
+
+						<!-- heading -->
+						<h2>{{ detail.productname }}</h2>
+						<div>แบรนด์สินค้า: <span><img src="{{detail.brand.brand_pic.url}}" style="width:10%"></span></div>
+					{% if detail.fakeprice %}
+					  	<h4>ลดราคา <span style="text-decoration:line-through;">{{detail.fakeprice|intcomma}}</span> <span style="color: red; font-weight: bold;">{{detail.productprice|intcomma}} </span>บาท</h4>
+					{% else %}
+					    <h4>ราคา: <span style="color: red">{{detail.productprice|intcomma}} บาท</span></h4> 
+					{% endif %}
+
+
+<div style="color: blue;">{% if detail.promotiontime %}
+  **โปรนี้ถึงวันที่ {{detail.promotiontime.day }} 
+  
+  {% if detail.promotiontime.month is 1 %}<span>มกราคม</span> 
+  {% elif detail.promotiontime.month is 2 %}<span>กุมภาพันธ์</span>
+  {% elif detail.promotiontime.month is 3 %}<span>มีนาคม</span> 
+  {% elif detail.promotiontime.month is 4 %}<span>เมษายน</span> 
+  {% elif detail.promotiontime.month is 5 %}<span>พฤษภาคม</span> 
+  {% elif detail.promotiontime.month is 6 %}<span>มิถุนายน</span> 
+  {% elif detail.promotiontime.month is 7 %}<span>กรกฎาคม</span> 
+  {% elif detail.promotiontime.month is 8 %}<span>สิงหาคม</span> 
+  {% elif detail.promotiontime.month is 9 %}<span>กันยายน</span> 
+  {% elif detail.promotiontime.month is 10 %}<span>ตุลาคม</span> 
+  {% elif detail.promotiontime.month is 11 %}<span>พฤศจิกายน</span> 
+  {% elif detail.promotiontime.month is 12 %}<span>ธันวาคม</span> 
+  {% endif %}
+  <span >{{ detail.promotiontime.year | add:"543"| stringformat:"d" }}</span> เท่านั้น**
+
+  {% else %}
+  {% endif %}
+</div>
+  <div style="color: red;">
+  {% if detail.delay_delivery == True %}
+    **สินค้าชิ้นนี้จัดส่งล่าช้าเนื่องจากปริมาณการสั่งซื้อ**
+  {% else %}
+  {% endif %}
+
+  {% if detail.askbefore == True %}
+    **สินค้ามีจำนวนจำกัดสอบถามก่อนสั่งซื้อ**
+  {% else %}
+  {% endif %}
+  </div>
+
+
+						
+						<!-- paragraph -->
+						<h5>{{ detail.productdetail | safe }}</h5>
+						{% if detail.youtube %}
+						<iframe width="375" height="325" src="https://www.youtube.com/embed/{{detail.youtube}}"></iframe>
+						{% else %}
+						{% endif %}
+						<a style="width:100%">{% for product in detail.images.all %}</a><br>
+						<img src="{{ product.file.url }}" style="max-width: 100%; "><br/>
+						{% if product.note %}
+						{{product.note}} <span><a href="{{product.link}}" target="_blank" style="text-decoration: underline;">ดูรายละเอียด</a></span>
+						{% else %}
+						
+						{% endif %}
+						{% endfor %}
+						{% if detail.upload %}
+						<a href="{{detail.upload.url}}" target="_blank">
+							<td><img src="{% static 'img/pdf.png' %}" width="30"></td>
+							<td>คู่มือการใช้งาน</td></a>
+						  {% else %}
+						  {% endif %}
+						{% if detail.lazada %}
+						</br><h4>สั่งผ่าน Lazada: <a href="{{detail.lazada}}"  target="_blank" style="text-decoration: underline;"><img height="50px"  src="{% static 'img/lazada.png' %}"></a></h4></br>
+						{% else %}
+						{% endif %}
+
+						{% if detail.shopee %}
+						<h4>สั่งผ่าน Shopee: <a href="{{detail.shopee}}"  target="_blank" style="text-decoration: underline;" ><img height="50px" src="{% static 'img/shopee.jpg' %}"></a></h4></br>
+						{% else %}
+						{% endif %}
+
+						{% if detail.nocnoc %}
+						<h4>สั่งผ่าน Nocnoc: <a href="{{detail.nocnoc}}"  target="_blank" style="text-decoration: underline;" ><img height="50px" src="{% static 'img/nocnoc.jpg' %}"></a></h4></br>
+						{% else %}
+						{% endif %}
+						<form action="{% url "cart:cart_add" detail.id %}" method="post">
+									{% csrf_token %}
+							<div style="display: none;">{{ cart_product_form.quantity}}</div>
+	<span class="pull-right"><a href="{% url 'product_list' %}" class="upcart" >กลับหน้าหลัก</a>
+  <span><button type="submit" class="upcart">เพิ่มลงตระกร้า</button></span></span>
+</form>
+</div>
+
+{% endblock %}

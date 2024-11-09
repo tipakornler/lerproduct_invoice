@@ -1,0 +1,45 @@
+{% load static %}
+{% load humanize %}
+{% load mathfilters %}
+<style>
+  @page { size: auto;  margin: 2rem; }
+  </style>
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    {{ detail.name }}<br>
+    {{ detail.tel_number }} <br>
+    {{ detail.address }} <br><br>
+
+
+    {% if detail.ler_pic1 %}
+    <span><img src="{{detail.ler_pic1.url}}" style="width:10%"></span>
+    {% else %}
+    {% endif %}
+    
+    {% if detail.ler_pic2 %}
+    <span><img src="{{detail.ler_pic2.url}}" style="width:10%"></span>
+    {% else %}
+    {% endif %}
+
+    {% if detail.ler_pic3 %}
+    <span><img src="{{detail.ler_pic3.url}}" style="width:10%"></span>
+    {% else %}
+    {% endif %}
+    {% if detail.ler_pic4 %}
+    <span><img src="{{detail.ler_pic4.url}}" style="width:10%"></span>
+    {% else %}
+    {% endif %}
+    {% if detail.ler_pic5 %}
+    <span><img src="{{detail.ler_pic5.url}}" style="width:10%"></span>
+    {% else %}
+    {% endif %}
+    {% if detail.ler_pic6 %}
+    <span><img src="{{detail.ler_pic6.url}}" style="width:10%"></span>
+    {% else %}
+    {% endif %}
+        
+</head>
+</html>

@@ -1,0 +1,124 @@
+{% load static %}
+{% load mathfilters %}
+{% load humanize %}
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="author" content="colorlib.com">
+
+    <link href="{% static 'css/search/main2.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">		
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/search/main.css' %}" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div class="s002">
+      <form>
+        <div class="inner-form">
+			<!-- team -->
+			<div class="input-field first-wrap">
+				<div class="icon-wrap">
+	
+				</div>
+				
+					<input class="search" type='text' id='search' placeholder="ค้นหาสินค้า" name="q"
+					value='{{ request.GET.q}}'>
+				</div>
+					
+<br>
+				</form>
+<br>
+      
+</div>
+</div>
+<style>
+	table, th, td {
+	  border: 1px  solid gray;
+	  border-collapse: collapse;
+	  margin: auto;
+	}
+	td {
+	  width: 100%;
+	}
+	th {
+	  text-align: center;
+	}
+	</style>
+				<div>
+				<h1>รายการคำสั่งซื้อ</h1>
+					<table  style="border-style: none; font-size: small;" >
+					<tr>
+						
+
+						<th style="width: 2%;">วันที่สร้าง</th>
+						<th style="width: 2%;">ชื่อ</th>
+						<th>เบอร์โทร</th>
+						<th >ที่อยู่</th>
+						<th>ใบเสนอราคา</th>
+						<th style="width: 3%;">E-mail</th>
+						<!-- <th>ใบสั่งซื้อ</th> -->
+					</tr>
+					{% for i in object_list %}
+					<tr>
+						<td style="width: 2%;  text-align: center;">{{i.name.created.date}}</td>
+						<td style="width: 4%; text-align: left;">{{i.name.name}} </td>
+						<td style="width: 2%; text-align: left;">{{i.name.tel_number}}</td>
+						<td style="width: 15%; text-align: left;">{{i.name.address}}</td>
+						<td style="width: 5%; text-align: center;"><a href="{{ i.name.get_quo }}" target="_blank">ใบเสนอราคา</a></td>
+						<td style="width: 3%; text-align: center;">{{i.name.email_addess}}</td>
+					</tr>
+					{% endfor %}
+					</table>
+				</div>
+			</div>
+			<div style="text-align: center;">
+				{% load filtersummary %}
+				{% if page_obj.has_other_pages %}
+			<ul class="pagination">
+			{% if page_obj.has_previous %}
+			  <li><a href="{% summary_url 1 'page' request.GET.urlencode %}"><i class="fas fa-angle-double-left"></i></a></li>
+			  <li><a href="{% summary_url page_obj.previous_page_number 'page' request.GET.urlencode %}"><i class="fas fa-angle-left"></i></a></li>
+			{% else %}
+			  <li class="disabled"><span><i class="fas fa-angle-double-left"></i></span></li>
+			  <li class="disabled"><span><i class="fas fa-angle-left"></i></span></li>
+			{% endif %}
+			{% for i in page_obj.paginator.page_range %}
+			  {% if page_obj.number == i %}
+				<li class="active"><span style="background-color:red;">{{ i }} <span class="sr-only">(current)</span></span></li>
+			  {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'4' %}
+			
+				<li><a href="{% summary_url i 'page' request.GET.urlencode %}">{{ i }}</a></li>
+			  {% endif %}
+			{% endfor %}
+			{% if page_obj.has_next %}
+			  <li><a href="{% summary_url page_obj.next_page_number 'page' request.GET.urlencode %}"><i class="fas fa-angle-right"></i></a></li>
+			  <li><a href="{% summary_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}"><i class="fas fa-angle-double-right"></i></i></a></li>
+			{% else %}
+			  <li class="disabled"><span><i class="fas fa-angle-right"></i></span></li>
+			  <li class="disabled"><span><i class="fas fa-angle-double-right"></i></i></span></li>
+			{% endif %}
+			</ul>
+			{% endif %}
+			</div>
+	    <script src="{% static 'js/search/choices.js' %}"></script>
+    <script src="{% static 'js/search/flatpickr.js' %}"></script>
+    <script>
+      flatpickr(".datepicker",
+      {});
+
+    </script>
+    <script>
+      const choices = new Choices('[data-trigger]',
+      {
+        searchEnabled: false,
+        itemSelectText: '',
+      });
+
+    </script>
+		</html>
+

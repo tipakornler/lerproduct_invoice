@@ -1,0 +1,17 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+    Your Shopping Cart| Thank you
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row" style="margin-top: 6%">
+            <div class="col-md-8 col-md-offset-2">
+                <h3 class="page-header">ขอบคุณสำหรับคำสั่งซื้อ
+                </h3>
+                <p>เลขที่คำสั่งซื้อของท่านคืน <strong>{{ order.id }}</strong> <a href="{% url 'orders:payment' %}">แจ้งโอนเงิน</a></p>  
+            </div>
+        </div>
+    </div>
+{% endblock %}

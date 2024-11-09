@@ -1,0 +1,116 @@
+{% load static %}
+{% load mathfilters %}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!DOCTYPE html>
+<html>
+  
+<style>
+  body{
+      background: #eee;
+  }
+  .signupdiv{
+      background: #fff;
+      border: 1px solid #ddd;
+      box-shadow: 1px 2px 3px #ccc;
+      border-radius: 2px;
+      text-align: center;
+      width: 90%;
+      display: block;
+      margin: auto;
+      margin-top: 100px;
+  }
+  #signupform{
+      padding: 15px;
+  }
+  input, select{
+      margin-bottom: 10px;
+      height: 38px;
+      border: 1px solid #ddd;
+      padding-left: 10px;
+  }
+  input{
+      width: 97%;
+  }
+  button, select{
+      width: 100%;
+  }
+  button{
+      height: 45px;
+      background: #188c01;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+  }
+  </style>
+  <!-- <form method="post">
+    {% csrf_token %}
+
+    {% if  invoice.ler_print == True %}
+        <input type="checkbox" id="ler_print" name="ler_print" value="Yes" checked="checked" /> 
+    {% else %}
+        <input type="checkbox" id="ler_print" name="ler_print" value="No"   /> 
+    {% endif %}
+    <label for="ler_print">พิพม์หรือยัง</label><br>
+
+    <label for="ler_receive">วันที่ไปรับ</label>
+    <input type=date name="ler_receive" value="{{invoice.ler_receive}}">  
+
+  
+    <label for="ler_deliver">วันที่ไปส่ง</label>
+    <input type=date name="ler_deliver" value="{{invoice.ler_deliver}}" >  
+
+    <label for="ler_note">หมายเหตุ</label>
+    <input type="text" name="ler_note" value="{{invoice.ler_note}}">
+
+    <input type="submit" value="เก็บช้อมูล">
+  </form> -->
+  <!-- Using the formset -->
+  <!-- {{ form.as_p }} -->
+<div class="signupdiv">
+  <h1 >แบบฟอร์มขอใบกำกับภาษีบริษัท เลอ คอร์ปอเรชั่น จำกัด (ใบกำกับจะออกเป็น e-tax) <br>จัดส่งให้ลูกค้าทาง email หลังจากยืนยันการรับสินค้าในระบบภายใน 15 วันทำการ (E-invoice request form)</h1> 
+<form  id="signupform" method="POST">
+
+  <!-- Security token -->
+  {% csrf_token %}
+<b>เลขที่คำสั่งซื้อ (Order Number)</b><br>
+<input type="text" name="order_m" style="text-align: center;" required><br>
+
+<b>ชื่อ- นามสกุล หรือ ชื่อบริษัท (Name or Company Name)</b><br>
+<input type="text" id="name" name="name" style="text-align: center;" required><br>
+
+<b>เบอร์ติดต่อ (Tel-Number)</b><br>
+<input type="text" id="tel_number" name="tel_number" style="text-align: center;" required><br>
+
+<b>ที่อยู่บริษัท หรือ ที่อยู่ตามบัตรประชาชน (address)</b><br>
+<input type="text" id="address" name="address" style="text-align: center;" required><br>
+
+<b>รหัสไปรษณีย์ (Postcode)</b><br>
+<input type="text" id="postcode" name="postcode" style="text-align: center;" required><br>
+
+<b>เลขประจำตัวผู้เสียภาษี (ID number)</b><br>
+<input type="number" id="tax_id" name="tax_id" style="text-align: center;" required><br>
+
+<b>ช่องทางการสั่งซื้อ (Buying channels)</b><br>
+<select id="platform" name="platform" style="text-align: center;">
+  <option name="Website" id="Website">Ler.co.th</option>
+  <option name="Shopee" id="Shopee">Shopee</option>
+  <option name="Lazada" id="Lazada">Lazada</option>
+  <option name="Nocnoc" id="Nocnoc">Nocnoc</option>
+  <option name="Tiktok" id="Tiktok">Tiktok</option>
+  <option name="Others" id="Others">อื่นๆ (Other)</option>
+</select><br>
+
+
+<b>email ที่ให้จัดส่งใบกำกับภาษี (Email address)</b><br>
+<input type="text" id="email" name="email" style="text-align: center;" required><br>
+
+
+  <input type="submit" value="Submit">
+</form>
+**ทางบริษัทจะไม่ได้แก้ไขข้อมูลใบกำกับภาษีที่ลูกค้ากรอกในกรณีที่ลูกค้ากรอกข้อมูลไม่ถูกต้องหรือครบถ้วน 
+</div>
+
+
+</body>
+</html>

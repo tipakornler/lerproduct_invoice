@@ -1,0 +1,52 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block content %}
+<!-- <script src="http://www.java.com/js/deployJava.js"></script> -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title> Coupon Code Web Design</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/coupon.css' %}">
+</head>
+<body>
+    {% for id in object_list %}
+
+
+    <div class="container">
+        <div class="coupon-card">
+            <!-- <img src="https://i.postimg.cc/KvTqpZq9/uber.png" class="logo"> -->
+            <h3>{{ id.decription }}</h3>
+            <di class="coupon-row">
+                <span id="cpnCode">{{ id.name }}</span>
+                <span id="cpnBtn">คัดลอก Code</span>
+                </di>
+            <p>ใช้ได้ถึง: {{ id.stop }}</p>
+            <div class="circle1"></div>
+            <div class="circle2"></div>
+
+        </div>
+
+    </div>
+    <script>
+        var cpnBtn = document.getElementById("cpnBtn");
+               var cpnCode = document.getElementById("cpnCode");
+   
+               cpnBtn.onclick = function(){
+                   navigator.clipboard.writeText(cpnCode.innerHTML);
+                   cpnBtn.innerHTML ="สำเร็จ";
+                   setTimeout(function(){
+                       cpnBtn.innerHTML="คัดลอก Code";
+                   }, 3000);
+               }
+   </script>
+    <br>
+
+    {% endfor %}
+</body>
+
+
+
+{% endblock %}

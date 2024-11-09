@@ -1,0 +1,212 @@
+{% load static %}
+{% load humanize %}
+{% load mathfilters %}
+<style>
+  @page {     size: 7in 9.25in;
+    margin: 27mm 16mm 27mm 16mm;}
+  </style>
+<!DOCTYPE html>
+
+<html lang="en">
+    <meta charset="utf-8">
+    {% if detail.name_invoce %}
+    <title>{{detail.name_invoce}}</title>
+    {% else %}
+    <title>{{detail.name}}</title>
+    {% endif %}
+
+    <link href="{% static 'css/detail_style2.css' %}" rel="stylesheet" media="all">
+  </head>
+  <body>
+
+
+      <div id="company">
+
+
+      </div>
+
+    <main>
+      <div id="details" class="clearfix">
+        <div id="client">
+
+          <h2 class="name">กรุณาส่ง: {{detail.name}} </h2>
+
+
+          <div class="email">เลขที่ผู้เสียภาษี: - </a></div>
+
+          <div class="email">เบอร์โทร: {{detail.tel_number}}</div>
+
+          <div class="address" style="width: 50%; position: absolute;">ที่อยู่: {{detail.address}}<br>(สำนักงานใหญ่)</div><br>
+
+          
+        </div>
+        <div id="invoice">
+          <h2 class="name">บริษัท เลอคอร์ปอเรชั่น จำกัด</h2>
+          (ต้นฉบับ)ใบจัดส่งสินค้า(ให้ลูกค้า)
+          {% if detail.count_invoice_number %}
+          <div>เลขที่ส่ง: DO{{detail.count_invoice_number}}/{{detail.invoice_date.day}}{{detail.invoice_date.month}}{{detail.invoice_date.year|sub:"2000"}}</div>
+          {% else %}
+          <div>เลขที่ส่ง: DO{{detail.id}}/{{detail.invoice_date.month}}{{detail.invoice_date.year|sub:"2000"}}</div>
+          {% endif %}
+          <div class="date">วันที่: 
+            {% if detail.invoice_date %}{{detail.invoice_date.day }} 
+    {% if detail.invoice_date.month is 1 %}<span>มกราคม</span> 
+  {% elif detail.invoice_date.month is 2 %}<span>กุมภาพันธ์</span>
+  {% elif detail.invoice_date.month is 3 %}<span>มีนาคม</span> 
+  {% elif detail.invoice_date.month is 4 %}<span>เมษายน</span> 
+  {% elif detail.invoice_date.month is 5 %}<span>พฤษภาคม</span> 
+  {% elif detail.invoice_date.month is 6 %}<span>มิถุนายน</span> 
+  {% elif detail.invoice_date.month is 7 %}<span>กรกฎาคม</span> 
+  {% elif detail.invoice_date.month is 8 %}<span>สิงหาคม</span> 
+  {% elif detail.invoice_date.month is 9 %}<span>กันยายน</span> 
+  {% elif detail.invoice_date.month is 10 %}<span>ตุลาคม</span> 
+  {% elif detail.invoice_date.month is 11 %}<span>พฤศจิกายน</span> 
+  {% elif detail.invoice_date.month is 12 %}<span>ธันวาคม</span> 
+  {% endif %}
+  <span >{{ detail.invoice_date.year | add:"543"| stringformat:"d" }}</span>
+
+  {% else %}
+  {% endif %}<br>
+  ผู้ขาย: LER-TL
+</div>
+        </div>
+      </div>
+      <table style="font-size: small;">
+
+          <tr>
+            <th>รายการที่</th>
+            <th>รายการสินค้า</th>
+            <th>จำนวน</th>
+
+          </tr>
+        <tbody>
+          {% for d in detail.invoices.all %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td style="text-align: left; font-size: small;">{{d.product}}</td>
+            <td class="desc">{{d.qty}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+
+      <b>กรุณาตรวจสอบสภาพสินค้าและอุปกรณ์ก่อนเซ็นต์รับเอกสาร มิฉะนั้นจะถือว่าท่านได้รับสินค้าถูกต้องสมบูรณ์แล้ว</b><br><br>
+      
+      <table  style="background: white;">
+
+        <th style="background: white;">
+          ________________<br>
+          ผู้จัดส่ง
+      </th>
+          <th style="background: white;"><img style="width: 150px;" src="{% static 'img/stamp.png' %}"></th>
+
+
+    <th style="background: white;">
+      ________________<br>
+      ผู้รับสินค้า</th>
+    <th style="background: white;">
+
+      </th>
+  </table>
+
+
+<tfoot>
+
+    
+    
+  
+</tfoot>
+</table>
+<footer >
+        <div id="details" class="clearfix">
+          <div id="client" style="text-align: left;">
+  
+            <h2 class="name">กรุณาส่ง: {{detail.name}} </h2>
+  
+  
+            <div class="email">เลขที่ผู้เสียภาษี: - </a></div>
+  
+            <div class="email">เบอร์โทร: {{detail.tel_number}}</div>
+  
+            <div class="address" style="width: 50%; position: absolute;">ที่อยู่: {{detail.address}}<br>(สำนักงานใหญ่)</div><br>
+  
+            
+          </div>
+          <div id="invoice">
+            <h2 class="name">บริษัท เลอคอร์ปอเรชั่น จำกัด</h2>
+            (สำเนา)ใบจัดส่งสินค้า
+            {% if detail.count_invoice_number %}
+            <div>เลขที่ส่ง: DO{{detail.count_invoice_number}}/{{detail.invoice_date.day}}{{detail.invoice_date.month}}{{detail.invoice_date.year|sub:"2000"}}</div>
+            {% else %}
+            <div>เลขที่ส่ง: DO{{detail.id}}/{{detail.invoice_date.month}}{{detail.invoice_date.year|sub:"2000"}}</div>
+            {% endif %}
+            <div class="date">วันที่: 
+              {% if detail.invoice_date %}{{detail.invoice_date.day }} 
+      {% if detail.invoice_date.month is 1 %}<span>มกราคม</span> 
+    {% elif detail.invoice_date.month is 2 %}<span>กุมภาพันธ์</span>
+    {% elif detail.invoice_date.month is 3 %}<span>มีนาคม</span> 
+    {% elif detail.invoice_date.month is 4 %}<span>เมษายน</span> 
+    {% elif detail.invoice_date.month is 5 %}<span>พฤษภาคม</span> 
+    {% elif detail.invoice_date.month is 6 %}<span>มิถุนายน</span> 
+    {% elif detail.invoice_date.month is 7 %}<span>กรกฎาคม</span> 
+    {% elif detail.invoice_date.month is 8 %}<span>สิงหาคม</span> 
+    {% elif detail.invoice_date.month is 9 %}<span>กันยายน</span> 
+    {% elif detail.invoice_date.month is 10 %}<span>ตุลาคม</span> 
+    {% elif detail.invoice_date.month is 11 %}<span>พฤศจิกายน</span> 
+    {% elif detail.invoice_date.month is 12 %}<span>ธันวาคม</span> 
+    {% endif %}
+    <span >{{ detail.invoice_date.year | add:"543"| stringformat:"d" }}</span>
+  
+    {% else %}
+    {% endif %}<br>
+    ผู้ขาย: LER-TL
+  </div>
+          </div>
+        </div>
+        <table style="font-size: small;">
+
+          <tr>
+            <th>รายการที่</th>
+            <th>รายการสินค้า</th>
+            <th>จำนวน</th>
+
+          </tr>
+        <tbody>
+          {% for d in detail.invoices.all %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td style="text-align: left; font-size: small;">{{d.product}}</td>
+            <td class="desc">{{d.qty}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+        <b>กรุณาตรวจสอบสภาพสินค้าและอุปกรณ์ก่อนเซ็นต์รับเอกสาร มิฉะนั้นจะถือว่าท่านได้รับสินค้าถูกต้องสมบูรณ์แล้ว</b><br><br>
+        <table  style="background: white;">
+
+          <th style="background: white;">
+            ________________<br>
+            ผู้จัดส่ง
+        </th>
+            <th style="background: white;"><img style="width: 150px;" src="{% static 'img/stamp.png' %}"></th>
+
+
+      <th style="background: white;">
+        ________________<br>
+        ผู้รับสินค้า</th>
+      <th style="background: white;">
+
+        </th>
+    </table>
+
+  </footer>
+
+
+    </main>
+    
+
+  </body>
+  
+</html>

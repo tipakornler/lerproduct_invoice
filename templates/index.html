@@ -1,0 +1,153 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Lerproduct- จำหน่ายเครื่องครัวคุณภาพ</title>
+		<link rel="icon" href="{% static 'img/top.png' %}" type="image/icon type">
+		<!-- Description, Keywords and Author -->
+		<meta name="description" content="จำหน่ายชุดเครื่องครัวคุณภาพ ได้มาตรฐาน">
+		<meta name="keywords" content="ชุดเครื่องครัว,เตาแก๊ส,อ่างล้างจาน,เตาไฟฟ้า,ก๊อกน้ำ,ซิงค์,ซิงค์ล้างจาน,ดูดควัน,เครื่องใช้ไฟฟ้า,เตาไฟฟ้า,ก๊อกล้างจาน">
+		<meta name="author" content="ResponsiveWebInc">
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<!-- Styles -->
+		<!-- Bootstrap CSS -->
+		<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+		<!-- Font awesome CSS -->
+		<link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">		
+		<!-- Custom CSS -->
+		<link href="{% static 'css/style.css' %}" rel="stylesheet">
+		
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="#">
+	</head>
+	
+	<body>
+	
+		<div class="wrapper">
+		
+			<!-- header -->
+			<header>
+				<!-- navigation -->
+				<nav class="navbar navbar-default" role="navigation">
+					<div class="container">
+						<!-- Brand and toggle get grouped for better mobile display -->
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+
+							<a class="navbar-brand" href="{% url 'product_list' %}"><img class="img-responsive" src="{% static 'img/13.png' %}" alt="Logo" /></a>
+						</div>
+
+						<!-- Collect the nav links, forms, and other content for toggling -->
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+							<ul class="nav navbar-nav navbar-right">
+								<li><a href="{% url 'product_list' %}">หน้าหลัก</a></li>
+								<li><a href="{% url 'about' %}">เกี่ยวกับเรา</a></li>
+								<li><a href="{% url 'insure' %}">การรับประกัน</a></li>
+								<li><a href="{% url 'contact' %}">ติดต่อเรา</a></li>
+								<li><a href="{% url 'promo' %}">Code ลดราคา</a></li>
+								<li><a href="{% url 'orders:payment' %}">แจ้งโอนเงิน</a></li>
+							</ul>
+						</div><!-- /.navbar-collapse -->
+
+					</div><!-- /.container-fluid -->
+					<div style="display: flex-container;">
+						<button class="button pull-right" style="vertical-align:middle"><span>
+							{% with totail_items=cart|length %}
+								{% if cart|length > 0 %}
+									<a href="{% url "cart:cart_detail" %}" style="color: #ffffff">
+										{{ totail_items }} ชิ้น ราคารวม {{ cart.get_total_price }} บาท
+									</a>
+									{% else %}
+									<i class="fas fa-shopping-basket"></i> เพิ่มสินค้า
+								{% endif %}
+							{% endwith %}
+						</div>
+					 </span></button>
+				</nav>
+</div>
+			</header>
+			
+			<!-- banner -->
+			<!-- <div class="banner" style="width: 100%;">
+				<div class="container"> -->
+					<!-- heading -->
+<!-- 					<h2>ชุดเครื่องครัว Eve สินค้าทุกชิ้นจัดส่งฟรีทั่วประเทศไทย "ยกเว้นข้ามเกาะ"</h2><br> -->
+					<!-- sub heading -->
+<!-- 					<h3>We show the features of your Brand</h3> -->
+					<!-- access button -->
+
+				</div>
+			</div>
+			<!-- banner end -->
+
+<!-- Load Facebook SDK for JavaScript -->
+<div id="fb-root"></div>
+<script>
+  window.fbAsyncInit = function() {
+	FB.init({
+	  xfbml            : true,
+	  version          : 'v8.0'
+	});
+  };
+
+  (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = 'https://connect.facebook.net/th_TH/sdk/xfbml.customerchat.js';
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<!-- Your Chat Plugin code -->
+<div class="fb-customerchat"
+  attribution=setup_tool
+  page_id="283693308376232"
+theme_color="#fa3c4c"
+logged_in_greeting="สวัสดีค่ะ สามารถสอบถามรายละเอียดเพิ่มเติมผ่านทางนี้ได้เลยนะคะ :)"
+logged_out_greeting="สวัสดีค่ะ สามารถสอบถามรายละเอียดเพิ่มเติมผ่านทางนี้ได้เลยนะคะ :)">
+</div>
+
+      {% block content %}
+      {% endblock content %}
+
+
+      {% include 'footer.html' %}
+		<!-- Javascript files -->
+		<!-- jQuery -->
+		<script src="{% static 'js/jquery.js' %}"></script>
+		<!-- Bootstrap JS -->
+		<script src="{% static 'js/bootstrap.min.js' %}"></script>
+		<!-- Respond JS for IE8 -->
+		<script src="{% static 'js/respond.min.js' %}"></script>
+		<!-- HTML5 Support for IE -->
+		<script src="{% static 'js/html5shiv.js' %}"></script>
+		<!-- Custom JS -->
+		<script src="{% static 'js/custom.js' %}"></script>
+
+	<!-- Added on Sep 28,2022 To add library for Vuejs -->
+	<!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script src="https://unpkg.com/axios@0.27.2/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-clipboard2/0.3.1/vue-clipboard.js"></script>
+    <script src="https://unpkg.com/vue-cookies@1.7.4/vue-cookies.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js" integrity="sha512-SxQulwFs2B38bmUJtBSo9tD07MDrtCbY8me3AOZ14tRknCPTeMDLvCQV4ekhs8R0o9QPnW5HQanKfveexVcwLA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    {% block script %}
+    {% endblock %}
+	<!-- End Added -->
+	</body>	
+</html>

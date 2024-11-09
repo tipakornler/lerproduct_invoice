@@ -1,0 +1,43 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container insure">
+
+<h2><u>สินค้าทุกชิ้นรับประกันโดยตรงกับทางเจ้าของแบรนด์</u></h2>
+
+<img src="{% static 'img/brand/eve.JPG' %}" style="max-width: 120px; height: auto;">
+
+<h4><a href="{% url 'insure_eve'  %}">วิธีการลงทะเบียนรับประกัน Eve</a></h4>
+
+<h5 color="blue">สินค้าประเภทเตาอบ (Oven), เครื่องดูดควัน (Hood), เครื่องเตาทุกชนิด (Hob)</h5>
+<p>สินค้ารับประกัน 2 ปีเงื่อนไขเป็นไปตามที่ EVE ประเทศไทยกำหนด</p>
+
+<h5 color="blue">สินค้าประเภทอ่างล้างจาน (Sink)</h5>
+<p>สินค้ารับประกัน 10 ปีเงื่อนไขเป็นไปตามที่ EVE ประเทศไทยกำหนด</p>
+
+**สินค้าแบบบิ้วอินท์ จะมีบริการซ่อมถึงบ้าน แบบวางบนโต๊ะส่งกลับบริษัทเพื่อซ่อม**
+
+<h4><a href=https://www.eve.co.th/warranty  target="_blank">..กดตรงนี้เพื่อลงทะเบียนประกันสินค้า Online แบรนด์ EVE..</a></h4>
+
+<img src="{% static 'img/brand/mex.JPG' %}" style="max-width: 150px; height: auto;">
+<h5>เงื่อนไขการรับประกันคุณภาพสินค้าจะต่างกันออกไป โปรดตรวจสอบในใบรับประกัน</h5>
+<p>เงื่อนไขเป็นไปตามที่ MEX ประเทศไทยกำหนด</p>
+
+<img src="{% static 'img/brand/foster.JPG' %}" style="max-width: 150px; height: auto;">
+<h5>สินค้ารับประกัน 2 ปี กับทาง Foster ประเทศไทย</h5>
+<p>เงื่อนไขเป็นไปตามที่ Foster ประเทศไทยกำหนด</p>
+<br>
+
+<img src="{% static 'img/brand/hafele.JPG' %}" style="max-width: 150px; height: auto;">
+<h5>สินค้ารับประกันกับทาง Hafele ประเทศไทยโดยลงทะเบียนผ่านใบรับประกันของสินค้า</h5>
+<p>เงื่อนไขเป็นไปตามที่ Hafele ประเทศไทยกำหนด</p>
+</div>
+
+
+
+
+
+{% endblock %}
+      {% block footer %}
+	{% endblock footer %}

@@ -1,0 +1,77 @@
+
+{% load static %}
+{% load mathfilters %}
+{% block content %}
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">		
+<link href="{% static 'css/style.css' %}" rel="stylesheet">
+<form class='form' method='GET' action='{% url 'adminquestion'  %}' style="margin-left: 20px; padding-top: 10px;">
+	<input class="search" type='text' id='search' placeholder="ค้นหาคำถาม" name="qa"
+	value='{{ request.GET.qa}}'>
+	<hidden><button type='submit' style="display: none "></button><br>
+	<a href="{% url 'adminquestion'  %}">ยกเลิก</a>
+</form><br>
+
+<style>
+    table, td, th {
+      border: 1px solid black;
+    }
+    
+    table {
+      border-collapse: collapse;
+    }
+    </style>
+					<!-- default heading -->
+
+                    <table >
+                        <tr >
+                                      <th style="width: 20%;">คำถาม</th>
+                                      <th style="width: 80%;">คำตอบ</th>
+                    
+                    
+                                   
+                                  </tr>
+                                  {% for qa in object_list %}
+                                  <tr >
+                                    <td style="width: auto; text-align: left;">{{qa.question}} </td>
+                                    <td style="width: auto; text-align: left;">{{qa.answer | safe}} </td>
+                                  </tr>
+                                  {% endfor %}
+                    </table>
+
+<div style="text-align: center;">
+          {% load filtersummary %}
+          {% if page_obj.has_other_pages %}
+      <ul class="pagination">
+      {% if page_obj.has_previous %}
+        <li><a href="{% summary_url 1 'page' request.GET.urlencode %}"><i class="fas fa-angle-double-left"></i></a></li>
+        <li><a href="{% summary_url page_obj.previous_page_number 'page' request.GET.urlencode %}"><i class="fas fa-angle-left"></i></a></li>
+      {% else %}
+        <li class="disabled"><span><i class="fas fa-angle-double-left"></i></span></li>
+        <li class="disabled"><span><i class="fas fa-angle-left"></i></span></li>
+      {% endif %}
+      {% for i in page_obj.paginator.page_range %}
+        {% if page_obj.number == i %}
+          <li class="active"><span style="background-color:red;">{{ i }} <span class="sr-only">(current)</span></span></li>
+        {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'4' %}
+      
+          <li><a href="{% summary_url i 'page' request.GET.urlencode %}">{{ i }}</a></li>
+        {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+        <li><a href="{% summary_url page_obj.next_page_number 'page' request.GET.urlencode %}"><i class="fas fa-angle-right"></i></a></li>
+        <li><a href="{% summary_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}"><i class="fas fa-angle-double-right"></i></i></a></li>
+      {% else %}
+        <li class="disabled"><span><i class="fas fa-angle-right"></i></span></li>
+        <li class="disabled"><span><i class="fas fa-angle-double-right"></i></i></span></li>
+      {% endif %}
+      </ul>
+      {% endif %}
+</div>
+
+
+  </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>
+{% endblock %}

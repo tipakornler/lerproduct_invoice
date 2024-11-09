@@ -1,0 +1,474 @@
+{% extends "index.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link href="{% static 'css/product_list.css' %}" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="author" content="colorlib.com">
+  <link href="{% static 'css/search/main_search.css' %}" rel="stylesheet" />
+
+</head>
+
+
+
+
+<body>
+  <div class="s010">
+    <form>
+      <div class="inner-form">
+        <div class="basic-search">
+          <div class="input-field">
+            <input id="search" type="text" name="name" placeholder="ค้นหาสินค้า" value='{{ request.GET.name}}' />
+            <div class="icon-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="advance-search">
+
+          <div class="row">
+            <div class="input-field">
+              <div class="input-select">
+                <select name="brand" value="{{ request.GET.brand}}" style="width: 100%; border-radius: 20px;">
+                  <option placeholder="แบรนด์สินค้า" value="" >แบรนด์สินค้า</option>
+        
+                  {% if  request.GET.brand == '1' %}
+                  <option value="1" selected>Eve</option>
+                  {% else %}
+                  <option value="1">Eve</option>
+                  {% endif %}
+        
+                  {% if  request.GET.brand == '2' %}
+                  <option value="2" selected>Hafele</option>
+                  {% else %}
+                  <option value="2">Hafele</option>
+                  {% endif %}
+        
+                  {% if  request.GET.brand == '3' %}
+                  <option value="3" selected>MEX</option>
+                  {% else %}
+                  <option value="3">MEX</option>
+                  {% endif %}
+        
+                  {% if  request.GET.brand == '4' %}
+                  <option value="4" selected>Foster</option>
+                  {% else %}
+                  <option value="4">Foster</option>
+                  {% endif %}
+
+                  {% if  request.GET.brand == '6' %}
+                  <option value="6" selected>Teka</option>
+                  {% else %}
+                  <option value="6">Teka</option>
+                  {% endif %}
+
+                  {% if  request.GET.brand == '7' %}
+                  <option value="7" selected>Vrh</option>
+                  {% else %}
+                  <option value="7">Vrh</option>
+                  {% endif %}
+                
+                  {% if  request.GET.brand == '8' %}
+                  <option value="8" selected>Fotile</option>
+                  {% else %}
+                  <option value="8">Fotile</option>
+                  {% endif %}
+
+                  {% if  request.GET.brand == '9' %}
+                  <option value="9" selected>Smeg</option>
+                  {% else %}
+                  <option value="9">Smeg</option>
+                  {% endif %}
+
+                  {% if  request.GET.brand == '10' %}
+                  <option value="10" selected>Tecno</option>
+                  {% else %}
+                  <option value="10">Tecno</option>
+                  {% endif %}
+
+                  {% if  request.GET.brand == '11' %}
+                  <option value="11" selected>Stiebel</option>
+                  {% else %}
+                  <option value="11">Stiebel</option>
+                  {% endif %}
+
+                  {% if  request.GET.brand == '12' %}
+                  <option value="12" selected>Franke</option>
+                  {% else %}
+                  <option value="12">Franke</option>
+                  {% endif %}
+
+                  {% if  request.GET.brand == '16' %}
+                  <option value="16" selected>Gorenje</option>
+                  {% else %}
+                  <option value="16">Gorenje</option>
+                  {% endif %}
+
+                  {% if  request.GET.brand == '17' %}
+                  <option value="17" selected>TOSHIBA</option>
+                  {% else %}
+                  <option value="17">TOSHIBA</option>
+                  {% endif %}
+
+                  {% if  request.GET.brand == '18' %}
+                  <option value="18" selected>Jaquar</option>
+                  {% else %}
+                  <option value="18">Jaquar</option>
+                  {% endif %}
+    
+                  {% if  request.GET.brand == '5' %}
+                  <option value="5" selected>Other</option>
+                  {% else %}
+                  <option value="5">Other</option>
+                  {% endif %}
+
+                </select>
+              </div>
+            </div>
+            <div class="input-field">
+              <div class="input-select">
+
+
+                <select name="category" value="{{ request.GET.category}}" style="width: 100%; border-radius: 20px;" >
+                  <option placeholder="ชนิดสินค้า" value="" >ชนิดสินค้า</option>
+
+                  {% if  request.GET.category == 'promotion-set' %}
+                  <option value="promotion-set" selected>โปรโมชั่น</option>
+                  {% else %}
+                  <option value="promotion-set">โปรโมชั่น</option>
+                  {% endif %}
+
+                  {% if  request.GET.category == 'hob' %}
+                  <option value="hob" selected>เตาแก๊ส</option>
+                  {% else %}
+                  <option value="hob">เตาแก๊ส</option>
+                  {% endif %}
+        
+                  {% if  request.GET.category == 'ehob' %}
+                  <option value="ehob" selected>เตาไฟฟ้า/เตาแม่เหล็กไฟฟ้า</option>
+                  {% else %}
+                  <option value="ehob">เตาไฟฟ้า/เตาแม่เหล็กไฟฟ้า</option>
+                  {% endif %}
+
+                  {% if  request.GET.category == 'hood' %}
+                  <option value="Hood" selected>เครื่องดูดควัน</option>
+                  {% else %}
+                  <option value="Hood">เครื่องดูดควัน</option>
+                  {% endif %}
+        
+                  {% if  request.GET.category == 'Sink' %}
+                  <option value="Sink" selected>อ่างล้างจาน</option>
+                  {% else %}
+                  <option value="Sink">อ่างล้างจาน</option>
+                  {% endif %}
+        
+                  {% if  request.GET.category == 'tab' %}
+                  <option value="tab" selected>ก๊อกน้ำ</option>
+                  {% else %}
+                  <option value="tab">ก๊อกน้ำ</option>
+                  {% endif %}
+        
+                  {% if  request.GET.category == 'microwave' %}
+                  <option value="microwave" selected>ไมโครเวฟ</option>
+                  {% else %}
+                  <option value="microwave">ไมโครเวฟ</option>
+                  {% endif %}
+        
+                  {% if  request.GET.category == 'oven' %}
+                  <option value="oven" selected>เตาอบ</option>
+                  {% else %}
+                  <option value="oven">เตาอบ</option>
+                  {% endif %}
+
+                  {% if  request.GET.category == 'heater' %}
+                  <option value="heater" selected>เครื่องทำน้ำอุ่น</option>
+                  {% else %}
+                  <option value="heater">เครื่องทำน้ำอุ่น</option>
+                  {% endif %}
+
+                  {% if  request.GET.category == 'Other' %}
+                  <option value="Other" selected>อื่นๆ</option>
+                  {% else %}
+                  <option value="Other">อื่นๆ</option>
+                  {% endif %}
+                  </select>
+              </div>
+            </div>
+
+          
+
+            <div class="input-field">
+              <div class="input-select">
+
+        <select  name="start_price" value="{{ request.GET.start_price}}" style="width: 100%; border-radius: 20px;">
+          <option placeholder="ตั้งแต่ราคา" value="">ตั้งแต่ราคา</option>
+
+          {% if  request.GET.start_price == '0' %}
+          <option value="0" selected>0</option>
+          {% else %}
+          <option value="0">0</option>
+          {% endif %}
+
+          {% if  request.GET.start_price == '500' %}
+          <option value="500" selected>500</option>
+          {% else %}
+          <option value="500">500</option>
+          {% endif %}
+
+
+          {% if  request.GET.start_price == '1000' %}
+          <option value="1000" selected>1,000</option>
+          {% else %}
+          <option value="1000">1,000</option>
+          {% endif %}
+
+          {% if  request.GET.start_price == '5000' %}
+          <option value="5000" selected>5,000</option>
+          {% else %}
+          <option value="5000">5,000</option>
+          {% endif %}
+
+          {% if  request.GET.start_price == '10000' %}
+          <option value="10000" selected>10,000</option>
+          {% else %}
+          <option value="10000">10,000</option>
+          {% endif %}
+        </select>
+              </div>
+            </div>
+            <div class="input-field">
+              <div class="input-select">
+
+
+                <select style="width: 100%; border-radius: 20px;"  name="end_price"  value="{{ request.GET.end_price}}" placeholder="ถึงราคา">
+                  <option value="" placeholder="ถึงราคา" >ถึงราคา</option>
+                       
+                  {% if  request.GET.end_price == '500' %}
+                  <option value="500" selected>500</option>
+                  {% else %}
+                  <option value="500">500</option>
+                  {% endif %}
+
+                  {% if  request.GET.end_price == '1000' %}
+                  <option value="1000" selected>1,000</option>
+                  {% else %}
+                  <option value="1000">1,000</option>
+                  {% endif %}
+
+                  {% if  request.GET.end_price == '5000' %}
+                  <option value="5000" selected>5,000</option>
+                  {% else %}
+                  <option value="5000">5,000</option>
+                  {% endif %}
+
+                  {% if  request.GET.end_price == '10000' %}
+                  <option value="10000" selected>10,000</option>
+                  {% else %}
+                  <option value="10000">10,000</option>
+                  {% endif %}
+
+                  {% if  request.GET.end_price == '100000' %}
+                  <option value="100000" selected>100,000</option>
+                  {% else %}
+                  <option value="100000">100,000</option>
+                  {% endif %}
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row third">
+            <div class="input-field">
+              <div class="result-count">
+                <span style="color: gray; "> จำนวน {{ page_obj.paginator.count }}</span>ชิ้น</div>
+                
+              <div class="group-btn">
+                <a class="btn-delete" href="{% url 'product_list'  %}">ล้างข้อมูล</a>
+                <span><button class="btn-search">ค้นหา</button></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const customSelects = document.querySelectorAll("select");
+    const deleteBtn = document.getElementById('delete')
+    const choices = new Choices('select',
+    {
+      searchEnabled: false,
+      itemSelectText: '',
+      removeItemButton: true,
+    });
+    for (let i = 0; i < customSelects.length; i++)
+    {
+      customSelects[i].addEventListener('addItem', function(event)
+      {
+        if (event.detail.value)
+        {
+          let parent = this.parentNode.parentNode
+          parent.classList.add('valid')
+          parent.classList.remove('invalid')
+        }
+        else
+        {
+          let parent = this.parentNode.parentNode
+          parent.classList.add('invalid')
+          parent.classList.remove('valid')
+        }
+      }, false);
+    }
+    deleteBtn.addEventListener("click", function(e)
+    {
+      e.preventDefault()
+      const deleteAll = document.querySelectorAll('.choices__button')
+      for (let i = 0; i < deleteAll.length; i++)
+      {
+        deleteAll[i].click();
+      }
+    });
+
+  </script>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+
+
+										
+
+
+			<div class="works" id="work" style="margin-top: -100px;">
+
+				<div class="container">
+
+					<div class="default-heading">
+						<!-- heading -->
+						<!-- paragraph -->
+						<p></p>
+
+
+	<div class="main">
+
+					{% for product in object_list %}
+					<div class="card">
+<div class="proimg">
+  <a href="{{ product.get_absolute_url }}"><img style="max-height: 250px; width: auto; margin: auto; padding-left: auto; padding-right: auto;" src="{{product.images.first.file.url}}"  class="image"  >
+   <div class="middle">
+    <div class="text">ดูรายละเอียด</div>
+  </div></a>
+</div>
+
+  <h4>{{product.productname}}</h4>
+  <div>แบรนด์สินค้า: <span><img src="{{product.brand.brand_pic.url}}" style="width:20%"></span></div>
+  {% if product.fakeprice %}
+  	<p class="price">ลดราคา <span style="text-decoration:line-through;">{{product.fakeprice|intcomma}}</span> <span style="color: red; font-weight: bold;">{{product.sale_price|intcomma}} </span>บาท</p>
+  {% else %}
+    <p class="price">ราคา {{product.sale_price|intcomma}} บาท</p>
+  {% endif %}
+  <div style="color: blue;">{% if product.promotiontime %}
+  **โปรนี้ถึงวันที่ {{product.promotiontime.day }} 
+  
+  {% if product.promotiontime.month is 1 %}<span>มกราคม</span> 
+  {% elif product.promotiontime.month is 2 %}<span>กุมภาพันธ์</span>
+  {% elif product.promotiontime.month is 3 %}<span>มีนาคม</span> 
+  {% elif product.promotiontime.month is 4 %}<span>เมษายน</span> 
+  {% elif product.promotiontime.month is 5 %}<span>พฤษภาคม</span> 
+  {% elif product.promotiontime.month is 6 %}<span>มิถุนายน</span> 
+  {% elif product.promotiontime.month is 7 %}<span>กรกฎาคม</span> 
+  {% elif product.promotiontime.month is 8 %}<span>สิงหาคม</span> 
+  {% elif product.promotiontime.month is 9 %}<span>กันยายน</span> 
+  {% elif product.promotiontime.month is 10 %}<span>ตุลาคม</span> 
+  {% elif product.promotiontime.month is 11 %}<span>พฤศจิกายน</span> 
+  {% elif product.promotiontime.month is 12 %}<span>ธันวาคม</span> 
+  {% endif %}
+  <span >{{ product.promotiontime.year | add:"543"| stringformat:"d" }}</span> เท่านั้น**
+
+  {% else %}
+  {% endif %}
+</div>
+  <div style="color: red;">
+  {% if product.delay_delivery == True %}
+    **สินค้าชิ้นนี้จัดส่งล่าช้าเนื่องจากปริมาณการสั่งซื้อ**
+  {% else %}
+  {% endif %}
+
+  {% if product.askbefore == True %}
+  **สินค้ามีจำนวนจำกัดสอบถามก่อนสั่งซื้อ**
+  {% else %}
+  {% endif %}
+
+  </div>
+
+<form action="{% url "cart:cart_add" product.id %}" method="post">
+									{% csrf_token %}
+									จำนวน: {{ cart_product_form.quantity}}
+  <p><button type="submit" class="upcart">เพิ่มลงตระกร้า</button></p>
+  <table>
+    <td><b style="margin-left: 2rem;">สั่งผ่านช่องทางอื่น:</b> &nbsp; &nbsp; </td>
+    {% if product.shopee %}
+    <td style="margin: auto;"><a href="{{ product.shopee }}" target="_blank"><img style="max-height: 50px; width: auto; margin: auto; padding-left: auto; padding-right: auto;" src="{% static 'img/shopee_icon.jpg'%}"  class="image"  ></td>
+    {% else %}
+    <td></td>
+    {% endif %}
+  
+    {% if product.nocnoc %}
+    <td style="margin: auto;"><a href="{{ product.nocnoc }}" target="_blank"><img style="max-height: 50px; width: auto; margin: auto; padding-left: auto; padding-right: auto;" src="{% static 'img/nocnoc_icon.jpg'%}"  class="image"  ></td>
+      {% else %}
+      <td></td>
+      {% endif %}
+    
+      {% if product.lazada %}
+    <td style="margin: auto;"><a href="{{ product.lazada }}" target="_blank"><img style="max-height: 50px; width: auto; margin: auto; padding-left: auto; padding-right: auto;" src="{% static 'img/lazada_icon.jpg'%}"  class="image"  ></td>
+      {% else %}
+      <td></td>
+      {% endif %}
+    </table>
+</div></form>
+
+
+							{% endfor %}
+
+	
+
+        </div>
+        
+        {% load filterproduct %}
+        {% if page_obj.has_other_pages %}
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+      <li><a href="{% my_url 1 'page' request.GET.urlencode %}"><i class="fas fa-angle-double-left"></i></a></li>
+      <li><a href="{% my_url page_obj.previous_page_number 'page' request.GET.urlencode %}"><i class="fas fa-angle-left"></i></a></li>
+    {% else %}
+      <li class="disabled"><span><i class="fas fa-angle-double-left"></i></span></li>
+      <li class="disabled"><span><i class="fas fa-angle-left"></i></span></li>
+    {% endif %}
+    {% for i in page_obj.paginator.page_range %}
+      {% if page_obj.number == i %}
+        <li class="active"><span style="background-color:red;">{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'4' %}
+
+        <li><a href="{% my_url i 'page' request.GET.urlencode %}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <li><a href="{% my_url page_obj.next_page_number 'page' request.GET.urlencode %}"><i class="fas fa-angle-right"></i></a></li>
+      <li><a href="{% my_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}"><i class="fas fa-angle-double-right"></i></i></a></li>
+    {% else %}
+      <li class="disabled"><span><i class="fas fa-angle-right"></i></span></li>
+      <li class="disabled"><span><i class="fas fa-angle-double-right"></i></i></span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+			</div>
+</div>
+
+
+
+{% endblock %}
+
+
+

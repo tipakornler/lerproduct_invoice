@@ -1,0 +1,256 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}
+    Your Shopping Cart| Checkout
+{% endblock %}
+
+{% block content %}
+
+
+<script>
+    const total_price = {{ original_price }};
+    const brand_name = '{{brands_list}}';
+</script>
+
+<div id="app">
+<v-app>
+    <div class="container">
+        <div class="row" style="margin-top: 6%">
+            <div class="col-md-8">
+                <h4 class="page-header">ที่อยู่ที่ให้จัดส่ง</h4>
+                <form action="." role="order" method="post" >
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="contactName">ชื่อ-นามสกุล</label>
+                        <input class="form-control" type="text" name="first_name" placeholder="กรุณาใส่ชื่อ" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tel">เบอร์ติดต่อ</label>
+                        <input class="form-control" type="tel" name="tel" placeholder="กรุณาใส่เบอร์ติดต่อ" pattern="{0}[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]"required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label><span style="color:red; font-size: 10px;" >**ไม่จำเป็นต้องใส่**</span>
+                        <input class="form-control" type="email" name="email" placeholder="กรุณาใส่ Email" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">ที่อยู่</label>
+                        <input class="form-control" type="text" name="address" placeholder="กรุณาใส่ที่อยู่" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="postal_code">รหัสไปรษณีย์</label>
+                        <input class="form-control" type="postal_code" name="postal_code" placeholder="กรุณากรอกรหัสไปรษณีย์" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="note">หมายเหตุ</label><span style="color:red; font-size: 10px;" >**ไม่จำเป็นต้องใส่**</span>
+                        <textarea class="form-control" type="text" name="note" placeholder="หมายเหตุ" /></textarea>
+                    </div>
+                 <br>
+                 <!-- Added by Chutchai -->
+                 <div class="form-group">
+                    <label for="postal_code">รหัสโปรโมทชั่น </label>
+                    <input v-model="promo_code_name"
+                        type="text" name="promo_code_name" placeholder="รหัสโปรโมทชั่น" required>
+                        <!-- <input v-model="promocode"> -->
+                    <v-text v-if = "promo_text">[[promo_text]] </v-text>
+                    
+                </div>
+
+                <!-- Added on Oct 7,2022 To post grand price and promocode -->
+                <input type="hidden" name="grand_price" :value="grand_total">
+                <input v-if="promo_code" type="hidden" name="promocode" :value="promo_code_name">
+           
+                 <!-- End Added by Chutchai -->
+                 
+                    <input type="submit" class="btn" style="border:1px solid red; background-color: transparent;" value="สั่งซื้อสินค้า">
+                </form>
+                <br>
+            </div>
+
+            <div class="col-md-4">
+                <div class="page-header">
+                    สินค้าของท่าน
+                </div>
+              
+                <ul class="list-group">
+                    {% for item in cart %}
+                        <li class="list-group-item">
+                         <img src="{{ item.product.images.first.file.url }}"style="height: 80px; width: auto"><br>{{ item.quantity }}x {{ item.product.productname }}<br>
+                        <span>ราคา {{ item.total_price|intcomma }} บาท </span>
+                        </li>
+                    {% endfor %}
+                    <li class="list-group-item active">ราคาสินค้า: {{ cart.get_total_price|intcomma }} บาท</li>
+                    <li class="list-group-item active"><v-text v-if = "promo_code">[[promo_text]]</v-text> </li>
+                <!-- <li class="list-group-item active">ราคาสินค้าทั้งหมด: {{ cart.get_total_price|intcomma }} บาท</li> -->
+                <li class="list-group-item active">ราคาสินค้าที่ต้องชำระ: [[grand_total.toLocaleString(undefined, {maximumFractionDigits:2})]] บาท</li>
+            </ul>
+            </div>
+
+
+
+        </div>
+    </div>
+</v-app>
+
+</div>
+{% endblock %}
+
+
+<!-- Added on Sep 28,2022 -->
+{% block script %}
+<script>
+new Vue({
+    delimiters: ['[[', ']]'],
+    el: '#app',
+    vuetify: new Vuetify(),
+    data: {
+        promo_code_name :'',
+        promo_code : null,
+        promo_text : '',
+        original_price : total_price ,
+        discount_price :0,
+        brand : brand_name,
+    },
+
+    watch: {
+          },
+    computed: {
+        grand_total(){
+            // return this.mix_brand ? this.original_price :this.original_price - this.discount_price;
+            return this.original_price - this.discount_price;
+        },
+
+        isPromotion() {
+                console.log('Start to checking promotion')
+                // 1)Check Promotion is exist
+                if (!this.promo_code){return false}
+                
+                // 2)Check total price reach to promo price
+                if (this.original_price < this.promo_code.promo_price) {return false}
+
+                // 3)Check all item's brand are in Promotion's brand
+                const brandArray = this.brand.split(" ");
+                return brandArray.every(element => this.promo_code.brands.includes(element))
+                // return this.promo_code.brand.includes(brand);
+        }
+        
+        
+
+     
+    },
+    methods: {
+
+          get_promocode: function(name) {
+                this.promo_code = null
+                this.promo_text =''
+                
+              axios
+              .get('../../promocode/api/'+ name)
+            //   .get(export_url + this.booking.toUpperCase())
+              .then(
+                  response => {
+                    console.log(response.data)
+                    this.promo_code = response.data
+                    
+                    if (!this.promo_code){
+                        console.log('No promotion')
+                        this.promo_text = 'ไม่พบโปรโมชั่นนี้'
+                        this.discount_price = 0
+                    }
+
+                    // if (parseFloat(this.promo_code.discount_rate) > 0){
+                    // Discount by %
+                    if (this.promo_code.discount_rate){
+                        this.discount_price = (this.original_price *(this.promo_code.discount_rate/100)).toFixed(2)
+                        this.promo_text = 'มีส่วนลด ' + this.promo_code.discount_rate + '% ('+ this.discount_price + 'บาท)' 
+                    }
+                    
+                    // if (parseFloat(this.promo_code.discount_price) > 0){
+                        // Discount by Price
+                    if (this.promo_code.discount_price){
+                        this.discount_price = parseFloat(this.promo_code.discount_price).toFixed(2)
+                        this.promo_text = 'มีส่วนลด ' + this.promo_code.discount_price + ' บาท'
+                    }
+                    
+                    // check total price reach promotion min price and brand are in promotion
+                    // Added on Oct 5,2022--To verify Brand
+                    // if( this.mix_brand 
+                    //     || !this.promo_code.brands.includes(this.brand) 
+                    //     || this.original_price < this.promo_code.promo_price  ){
+                    //     this.promo_text =''
+                    //     this.discount_price = 0
+                    // }
+                    if (!this.isPromotion){
+                        console.log('No promotion')
+                        this.promo_text = ''
+                        this.discount_price = 0
+                    }
+                    
+
+                    // -------------------------------------
+
+                  })
+              .catch(error =>{
+                console.log('Error on getting promotion' + error)
+                this.promo_code = null
+                    // return promotion
+                })
+
+                
+                // this.isClicked = false;
+                // or if you want to release the isClicked state after a second (for whatever reason)
+                // setTimeout(function(){
+                //     this.isClicked = false;
+                // }.bind(this),5000);
+          },//End get_promocode function
+        //   get_discount: function(promotion_code){
+        //     console.log('Discount :' + promotion_code)
+        //         this.promo_code = null
+        //         this.promo_text = ''
+        //         this.get_promocode(promotion_code)
+        //         console.log('Discount :' + this.promo_code)
+        //         if (this.promo_code.discount_rate > 0){
+        //             // Discount by %
+        //             this.promo_text = 'มีส่วนลด ' + this.promo_code.discount_rate + '%'
+        //         }else{
+        //             // Discount by Price
+        //             this.promo_text = 'มีส่วนลด ' + this.promo_code.discount_price + ' บาท'
+        //         }
+        //   },
+
+        // on_promotion(){
+        //     if (!this.promo_code){return false}
+        //     const brandArray = this.brand.split(" ");
+        //     console.log(brandArray);
+        //     return brandArray.every(this.isPromotion)
+        // }
+
+        
+
+      },//End method
+      watch: {
+        promo_code_name(){
+            this.promo_code = null
+                this.promo_text = ''
+                discount_price=0
+            if(this.promo_code_name.length == 6){
+
+                this.get_promocode(this.promo_code_name)
+                console.log('You code is ' + this.promo_code_name)
+            }else{
+                this.promo_code     = null
+                this.promo_text     = 'รหัสโปรโมชั่นไม่ถูกต้อง'
+                this.discount_price = 0
+                if(this.promo_code_name.length == 0){
+                    this.promo_text     = ''
+                }
+            }
+            
+            
+        }
+      },//End Watch
+  })
+  </script>
+{% endblock %}

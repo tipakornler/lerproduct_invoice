@@ -1,0 +1,88 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+    Your Shopping Cart| Checkout
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row" style="margin-top: 6%">
+            <div class="col-md-8">
+                <h4 class="page-header">ชำระเงินค่าสินค้า</h4>
+                <form action="addpayment" role="order" method="post" >
+                    {% csrf_token %}
+                    <input name="payer_name" value="{{ order.first_name }}" style="display: none;">
+                    <input name="total_need_to_paid" value="{{ cart.get_total_price }}" style="display: none;">
+                    <input name="paid" value="True" style="display: none;">
+
+                    <div class="form-group">
+                        <label for="contactName">จ่ายโดยการโอน: ธนาคารกสิกรไทย หมายเลขบัญชี 088-3-57389-7 ชื่อบัญชี <span style="color:blue">บริษัท เลอ คอร์ปอเรชั่น จำกัด</span></label>
+                    </div>
+                    <div class="form-group">
+                        <label for="tel">วันที่โอน</label>
+                        <input type=date class="form-control"name="payer_date" value="today" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">เวลาโอน</label>
+                        <input type=time class="form-control" name="payer_time" value="now" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">จำนวนเงินที่โอน</label>
+                        <input type="number" class="form-control" name="payer_among" value="{{ order.grand_price }}" placeholder="จำนวนเงิน" required>
+                    </div>
+
+
+                    
+
+                 <br>
+                 <table>
+                    <input type="submit" class="btn" style="display: table-cell; border:1px solid red; background-color: transparent;" value="แจ้งชำระเงิน">
+                </form>
+                <form action="paylater"  method="post" >
+                    {% csrf_token %}
+                    <input name="payer_name" value="{{ order.first_name }}" style="display: none;">
+                    <input name="total_need_to_paid" value="{{ cart.get_total_price }}" style="display: none;">
+                    <input name="paid" value="False" style="display: none;">                        
+                    <input type="submit" class="btn" style="display: table-cell; border:1px solid red; background-color: transparent;" value="ชำระภายหลัง">
+                </form>
+                </table>
+                <br>
+            </div>
+            <div class="col-md-4">
+                <div class="page-header">
+                    สินค้าของท่าน
+                </div>
+                <ul class="list-group">
+                    {% for item in cart %}
+                        <li class="list-group-item">
+                         <img src="{{ item.product.images.first.file.url }}"style="height: 80px; width: auto"><br>{{ item.quantity }}x {{ item.product.productname }}<br>
+                        <span>ราคา {{ item.total_price }} บาท</span>
+                        </li>
+                    {% endfor %}
+
+                <li class="list-group-item active">ราคาสินค้าทั้งหมด: {{ order.grand_price }} บาท</li>
+                </ul>
+
+                <div class="page-header">
+                    รายละเอียดการจัดส่ง
+                </div>
+                <ul class="list-group">
+
+                        <li class="list-group-item">
+                        ชื่อ: {{ order.first_name }}<br>
+                        เบอร์ติดต่อ: {{ order.tel }}<br>
+                        ที่อยู่: {{ order.address }}<br><span> {{ order.postal_code }}</span>
+                        {% if order.note %}
+                        หมายเหตุ: {{order.note}}
+                        {% else %}
+                        หมายเหตุ: ไม่มี
+                        {% endif %}
+                        </li>
+
+                </ul>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

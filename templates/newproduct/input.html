@@ -1,0 +1,98 @@
+{% load static %}
+{% load mathfilters %}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!DOCTYPE html>
+<html>
+  
+<style>
+  body{
+      background: #eee;
+  }
+  .signupdiv{
+      background: #fff;
+      border: 1px solid #ddd;
+      box-shadow: 1px 2px 3px #ccc;
+      border-radius: 2px;
+      text-align: center;
+      width: 90%;
+      display: block;
+      margin: auto;
+      margin-top: 100px;
+  }
+  #signupform{
+      padding: 15px;
+  }
+  input, select{
+      margin-bottom: 10px;
+      height: 38px;
+      border: 1px solid #ddd;
+      padding-left: 10px;
+  }
+  input{
+      width: 97%;
+  }
+  button, select{
+      width: 100%;
+  }
+  button{
+      height: 45px;
+      background: #188c01;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+  }
+  </style>
+  <!-- <form method="post">
+    {% csrf_token %}
+
+    {% if  invoice.ler_print == True %}
+        <input type="checkbox" id="ler_print" name="ler_print" value="Yes" checked="checked" /> 
+    {% else %}
+        <input type="checkbox" id="ler_print" name="ler_print" value="No"   /> 
+    {% endif %}
+    <label for="ler_print">พิพม์หรือยัง</label><br>
+
+    <label for="ler_receive">วันที่ไปรับ</label>
+    <input type=date name="ler_receive" value="{{invoice.ler_receive}}">  
+
+  
+    <label for="ler_deliver">วันที่ไปส่ง</label>
+    <input type=date name="ler_deliver" value="{{invoice.ler_deliver}}" >  
+
+    <label for="ler_note">หมายเหตุ</label>
+    <input type="text" name="ler_note" value="{{invoice.ler_note}}">
+
+    <input type="submit" value="เก็บช้อมูล">
+  </form> -->
+  <!-- Using the formset -->
+  <!-- {{ form.as_p }} -->
+<div class="signupdiv">
+  <h1 >เพิ่มสินค้า</h1>
+<form  id="signupform" method="POST">
+
+  <!-- Security token -->
+  {% csrf_token %}
+<b>รหัสสินค้า</b><br>
+<input type="text" name="product_id" style="text-align: center;" ><br>
+
+<b>ชื่อสินค้า</b><br>
+<input type="text" id="product_name" name="product_name" style="text-align: center;" ><br>
+
+<b>ราคา</b><br>
+<input type="number" id="price" name="price" style="text-align: center;" ><br>
+
+<b>link สินค้า</b><br>
+<input type="text" id="link_product" name="link_product" style="text-align: center;" ><br>
+
+<b>หมายเหตุ</b><br>
+<input type="text" id="comment" name="comment" style="text-align: center;" ><br>
+
+
+  <input type="submit" value="Submit">
+</form>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+{% load static %}
+{% load mathfilters %}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!DOCTYPE html>
+<html>
+<style>
+input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=date], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=submit] {
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+div {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+</style>
+<body>
+
+<div>
+  <form method="post">
+    {% csrf_token %}
+
+
+    <label for="ler_receive">วันที่คิดว่าจะส่ง</label>
+    <input type=date name="ler_expected_d" value="{{invoice.ler_expected_d}}">  
+
+  
+    <label for="ler_deliver">ลำดับที่ส่ง</label>
+
+    {% if  invoice.ler_priority %}
+    <input type=text name="ler_priority" value="{{invoice.ler_priority}}" >  
+    {% else %}
+    <input type="text" id="ler_priority" name="ler_priority" value="">
+    {% endif %} 
+
+
+
+    <label for="ler_note">หมายเหตุ</label>
+    <input type="text" name="ler_note" value="{{invoice.ler_note}}">
+
+    <label for="ler_note">แผนที่</label>
+    {% if  invoice.ler_map %}
+    <input type="text" name="ler_map" value="{{invoice.ler_map}}">
+    {% else %}
+    <input type="text" id="ler_map" name="ler_map" value="">
+    {% endif %} 
+
+
+
+    <input type="submit" value="เก็บช้อมูล">
+  </form>
+</div>
+
+</body>
+</html>

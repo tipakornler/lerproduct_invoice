@@ -1,0 +1,42 @@
+{% load static %}
+{% load mathfilters %}
+{% load humanize %}
+
+<html>
+  <head>
+    <div class="s002">
+      <form>
+        <div class="inner-form">
+    <div class="input-field first-wrap">
+      <input id="search" name="a" type="text" placeholder="ค้นหาชื่อสินค้า" value='{{ request.GET.a}}'/>
+      <button class="btn-search" type='submit'>ค้นหา</button>
+    </div>
+  </form>
+</div>
+
+จำนวนสินค้าคงเหลือ:{{stock.total_qty}} <br>
+สินค้าออก:{{stock.total_qty_out}}<br>
+สินค้าเข้า:{{stock.total_qty_in}}
+    <table style="text-align: center; margin: 2rem; font-size:smaller;" >
+      <tr>
+
+        <th style="width: 6%;">ชื่อสินค้า</th>
+        <th style="width: 6%;">จำนวนสินค้า</th>
+        <th style="width: 6%;">ราคา</th>   
+      </tr>
+    {% for id in object_list %}
+
+      <tr>
+
+        <td>{{id.order_number}}</td>
+        <td>{{id.productout}}</td>
+        <td>{{id.qty|sub:id.productout.qty}}</td>
+
+
+
+
+    </tr>
+    {% endfor %}
+    <tr>
+
+</html>

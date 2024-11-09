@@ -1,0 +1,154 @@
+{% load static %}
+{% load humanize %}
+{% load mathfilters %}
+<style>
+  @page { size: auto;  margin: 2rem; }
+  </style>
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    {% if detail.name_invoce %}
+    <title>{{detail.name_invoce}}</title>
+    {% else %}
+    <title>{{detail.name}}</title>
+    {% endif %}
+
+    <link href="{% static 'css/detail_style.css' %}" rel="stylesheet" media="all">
+  </head>
+  <body>
+    <header class="clearfix">
+
+      <div id="company">
+        ชื่อที่อยู่จัดส่ง
+        {{detail.name}}<br>
+        {{detail.address}}
+      </div>
+      </div>
+    </header>
+    <main>
+      <div id="details" class="clearfix">
+        <div id="client">
+          {% if detail.name_invoce %}
+          <h2 class="name">ผู้ซื้อ: {{detail.name_invoce}} </h2>
+          {% else %}
+          <h2 class="name">ผู้ซื้อ: {{detail.name}} </h2>
+          {% endif %}
+          {% if detail.tax_number %}
+          <div class="email">เลขที่ผู้เสียภาษี:{{detail.tax_number}}</a></div>
+          {% else %}
+          <div class="email">เลขที่ผู้เสียภาษี: - </a></div>
+          {% endif %}
+          <div class="email">เบอร์โทร: {{detail.tel_number}}</div>
+
+          {% if detail.name_invoce %}
+          <div class="address" style="width: 50%; position: absolute;">ที่อยู่: {{detail.address_invoice}}<br>{% if detail.brance %} ({{detail.brance}})<br>{% else %}(สำนักงานใหญ่)<br>{% endif %}</div>
+          {% else %}
+          <div class="address" style="width: 50%; position: absolute;">ที่อยู่: {{detail.address}}<br>{% if detail.brance %} ({{detail.brance}})<br>{% else %}(สำนักงานใหญ่)<br>{% endif %}</div>
+          {% endif %}
+
+          
+        </div>
+        <div id="invoice">
+          {% if detail.count_invoice_number %}
+          <div>เลขที่ใบเสร็จ: {{detail.count_invoice_number}}/{{detail.invoice_date.day}}{{detail.invoice_date.month}}{{detail.invoice_date.year|sub:"2000"}}</div>
+          {% else %}
+          <div>เลขที่ใบเสร็จ: {{detail.id}}/{{detail.invoice_date.month}}{{detail.invoice_date.year|sub:"2000"}}</div>
+          {% endif %}
+          <div class="date">วันที่ออกบิล: 
+            {% if detail.invoice_date %}{{detail.invoice_date.day }} 
+    {% if detail.invoice_date.month is 1 %}<span>มกราคม</span> 
+  {% elif detail.invoice_date.month is 2 %}<span>กุมภาพันธ์</span>
+  {% elif detail.invoice_date.month is 3 %}<span>มีนาคม</span> 
+  {% elif detail.invoice_date.month is 4 %}<span>เมษายน</span> 
+  {% elif detail.invoice_date.month is 5 %}<span>พฤษภาคม</span> 
+  {% elif detail.invoice_date.month is 6 %}<span>มิถุนายน</span> 
+  {% elif detail.invoice_date.month is 7 %}<span>กรกฎาคม</span> 
+  {% elif detail.invoice_date.month is 8 %}<span>สิงหาคม</span> 
+  {% elif detail.invoice_date.month is 9 %}<span>กันยายน</span> 
+  {% elif detail.invoice_date.month is 10 %}<span>ตุลาคม</span> 
+  {% elif detail.invoice_date.month is 11 %}<span>พฤศจิกายน</span> 
+  {% elif detail.invoice_date.month is 12 %}<span>ธันวาคม</span> 
+  {% endif %}
+  <span >{{ detail.invoice_date.year | add:"543"| stringformat:"d" }}</span>
+
+  {% else %}
+  {% endif %}<br>
+  ผู้ขาย: LER-TL
+</div>
+        </div>
+      </div>
+      <table border="0" cellspacing="0" cellpadding="0">
+        <thead>
+          <tr>
+            <th>รายการที่</th>
+            <th>รายการสินค้า</th>
+            <th>ราคาสินค้า</th>
+            <th>จำนวน</th>
+            <th>ราคารวม</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for d in detail.invoices.all %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td class="desc">{{d.product}}</td>
+            <td class="desc">{{d.sell_price|floatformat:2|intcomma}}</td>
+            <td class="desc">{{d.qty}}</td>
+            <td>{{ d.sell_price|mul:d.qty|floatformat:2|intcomma }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2"></td>
+            <td colspan="2">ราคารวม</td>
+            <td>{{ total_price|floatformat:2|intcomma }}</td>
+          </tr>
+          <tr>
+            <td colspan="2"></td>
+            <td colspan="2">ราคาก่อนภาษีมูลค่าเพิ่ม</td>
+            
+            <td>{{ total_price|div:"1.07"|floatformat:2|intcomma }}</td>
+          </tr>
+          <tr>
+            <td colspan="2"></td>
+            <td colspan="2">ภาษีมูลค่าเพิ่ม 7%</td>
+            <td>{{ total_price|div:"1.07"|sub:total_price|abs|floatformat:2|intcomma }}</td>
+          </tr>
+          <tr>
+            <td colspan="2"></td>
+            <td colspan="2">ราคารวมภาษีมูลค่าเพิ่ม</td>
+            <td>{{ total_price|floatformat:2|intcomma}}</td>
+            
+            
+          </tr>
+          <tr></tr>
+          
+        </tfoot>
+      </table>
+      ({{ baht }}) <br>
+      <footer>
+        <table  style="background: white;">
+
+
+            <th style="background: white;"><img style="width: 150px;" src="{% static 'img/stamp.png' %}"></th>
+
+        <th style="background: white;">
+
+          ผู้รับเงิน:  LER-TL
+      </th>
+      <th style="background: white;">
+
+        </th>
+    </table>
+
+    </footer>
+
+
+
+    </main>
+
+  </body>
+</html>

@@ -1,0 +1,61 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block content %}
+
+			<!-- contact -->
+			<div class="contact" id="contact">
+				<div class="container">
+					<!-- default heading -->
+					<div class="default-heading">
+						<!-- heading -->
+						<!-- paragraph -->
+						<h3>แจ้งโอนเงิน</h3>
+					</div>
+					<!-- contact container -->
+					<div class="contact-container">	
+						<div class="row">
+							<div class="col-md-5 col-sm-6">
+								<!-- heading -->
+								<h3></h3>
+								<form action="addpayment" role="form" method="post">
+									{% csrf_token %}
+									<div class="form-group">
+										<label for="contactName">ชื่อ</label>
+										<input class="form-control" type="text" name="payer_name" placeholder="ชื่อ-นามสกุล" required>
+									</div>
+									<div class="form-group">
+										<label for="contactEmail">จำนวนที่โอน</label>
+										<input type="number" class="form-control" name="payer_among" placeholder="จำนวนเงิน" required>
+									</div>
+									<div class="form-group">
+										<label for="contactMessage">เวลาโอน</label><br>
+										<input type=time class="form-control" name="payer_time" value="now" required>
+									</div>
+									<div class="form-group">
+										<label for="contactEmail">วันที่โอน</label><br>
+										<input type=date class="form-control"name="payer_date" value="today" required>
+									</div>
+									<div class="form-group">
+										<button type="submit" name="submit" id="submit" class="btn btn-default">ส่งข้อมูล</button>
+									</div>
+								</form>
+							</div>
+							<div class="col-md-3 col-sm-6">
+								<!-- heading -->
+								<h3>ธนาคาร</h3>
+								<!-- paragraph -->
+								ธนาคารกสิกรไทย<br>
+									หมายเลขบัญชี <span style="color:blue">088-3-57389-7</span><br>
+									ชื่อบัญชี <span style="color:blue">บริษัท เลอ คอร์ปอเรชั่น จำกัด</span></p>
+								<br><h3>บัตรเครดิด</h3>
+								กด Link เพื่อจ่ายผ่านบัตรที่รับรองความปลอดภัยโดย facebook: <span style="text-decoration: underline;"><a href="http://m.me/lerproduct/" target="blank">คลิก</a></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
+{% endblock %}

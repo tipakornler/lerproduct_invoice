@@ -1,0 +1,107 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}
+    Your Shopping Cart
+{% endblock %}
+
+
+{% block content %}
+<link href="{% static 'css/detail_cart.css' %}" rel="stylesheet">
+<div class="all">
+    <div class="container">
+        <div class="row" style="margin-top: 6%">
+        <h2>รายการสินค้า
+
+        </h2>
+            <table class="table table-striped table-hover">
+                <thead style="background-color: #CD5C5C">
+                    <tr>
+                        <th>รูป</th>
+                        <th>ชื่อสินค้า</th>
+                        <th>จำนวน</th>
+                        <th>ลบ</th>
+                        <th>ราคารวม</th>
+                        <th>ราคา</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for item in cart %}
+                    {% with product=item.product %}
+                        <tr>
+                            <td>
+                                <a href="{{ product.get_absolute_url }}">
+                                    <img src="{{product.images.first.file.url}}" alt="..." style="height: 130px; width: auto">
+                                </a>
+                            </td>
+                            <td>{{ product.productname }}</td>
+                            <td>
+                                <form action="{% url "cart:cart_add" product.id %}" method="post">
+                                    {% csrf_token %}
+                                    {{ item.update_quantity_form.quantity }}
+                                    {{ item.update_quantity_form.update }}
+                                    <input type="submit" value="Update" class="btn">
+                                </form>
+                            </td>
+                            <td>
+                                <a href="{% url "cart:cart_remove" product.id %}">ลบ</a>
+                            </td>
+                            <td>{{ item.price|intcomma }} บาท</td>
+                            <td>{{ item.total_price|intcomma }} บาท</td>
+                        </tr>
+                    {% endwith %}
+                {% endfor %}
+                {% if cart|length == 0 %}
+                    <td colspan="6" style="text-align: center;">**ไม่มีสินค้าในตระกร้า**<b></td>
+                {% else %}
+                <tr style="">
+                    <td><b>ราคารวมค่าจัดส่ง</b></td>
+                    <td colspan="4"></td>
+                    <td colspan="num"><b>{{ cart.get_total_price|intcomma }} บาท</b></td>
+                </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        <p align="right">
+            {% if cart|length > 0 %}
+            <a href="{% url 'product_list' %}" class="btn" style="border:1px solid red;">เลือกสินค้าเพิ่ม</a>
+            <span class="btn" style="border:1px solid red"><a href="{% url "orders:order_create" %}"  >สั่งซื้อสินค้า</a></span>
+            {% else %}
+            <a href="{% url 'product_list' %}" class="btn" style="border:1px solid red;">กรุณาเลือกสินค้า</a>
+            {% endif %}
+        </p><br>
+        </div>
+    </div>
+</div>
+
+<div class="mobile_item">
+                    {% for item in cart %}
+                    {% with product=item.product %}
+
+<img src="{{product.images.first.file.url}}"style="height: 130px; width: auto"><br>
+ราคาสินค้า {{ item.price }} บาท<br>
+                                <form action="{% url "cart:cart_add" product.id %}" method="post">
+                                    {% csrf_token %}
+                                    {{ item.update_quantity_form.quantity }}
+                                    {{ item.update_quantity_form.update }}
+<span><input type="submit" value="Update" class="btn"></span>
+</form>
+{{ product.productname }}<br>
+
+<a style="color =red;">ราคารวม {{ item.total_price }} บาท</a><br>
+<a href="{% url "cart:cart_remove" product.id %}">ยกเลิก</a><br>
+                    {% endwith %}
+                {% endfor %}
+<h4 align="right">ราคารวมทั้งหมด {{ cart.get_total_price }} บาท</h4>
+        <p align="right">
+            {% if cart|length > 0 %}
+            <a href="{% url 'product_list' %}" class="btn" style="border:1px solid red;">เลือกสินค้าเพิ่ม</a>
+            <span class="btn" style="border:1px solid red"><a href="{% url "orders:order_create" %}"  >สั่งซื้อสินค้า</a></span>
+            {% else %}
+            <a href="{% url 'product_list' %}" class="btn" style="border:1px solid red; margin-right: 0.5rem;">กรุณาเลือกสินค้า</a>
+            {% endif %}
+        </p><br>
+</div>
+
+</div>
+{% endblock %}

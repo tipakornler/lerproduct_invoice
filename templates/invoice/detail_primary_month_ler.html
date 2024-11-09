@@ -1,0 +1,126 @@
+{% load humanize %}
+{% load static %}
+{% load mathfilters %}
+
+{% block content %}
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="author" content="colorlib.com">
+
+    <link href="{% static 'css/search/main2.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">		
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/search/main.css' %}" rel="stylesheet" />
+  </head>
+  <style>
+	table, th, td {
+	  border: 1px  solid gray;
+	  border-collapse: collapse;
+	  margin: auto;
+	}
+	td {
+	  width: 100%;
+	}
+	th {
+	  text-align: center;
+	}
+	</style>
+
+<body>
+
+      <form>
+
+
+				<div class="input-field second-wrap" style="align-items: center;">
+					<input class="datepicker" placeholder="ค้นหาวันที่" id="theDate"  type=date defaultvalue="theDate" name="start_date" value="{{ request.GET.start_date}}" type="text"  />
+          <input class="datepicker" id="theDate"  type=date defaultvalue="theDate"  name="end_date" value="{{ request.GET.end_date}}" type="text" placeholder="ถึงวันที่" />
+		  <button class="btn-search" type='submit'>ค้นหา</button> 		
+		</div>
+				</form>
+
+
+
+				<h1>รายการคำสั่งซื้อ</h1>
+        <table style="border: 0;">
+          <thead>
+					<tr style="font-size: small;">
+						<th style="width: 10%; border: 0;">เลขที่ invoice</th>
+						<th style="width: 10%; border: 0;">วันที่</th>
+						<th style="width: 10%; border: 0;">ชื่อลูกค้า</th>
+						<th style="width: 50%; border: 0;">ชื่อสินค้า</th>
+						<th style="width: 5%; border: 0;">จำนวน</th>
+						<th style="width: 10%; border: 0;">ราคา</th>
+						<th style="width: 10%; border: 0;">ราคารวม</th>
+
+						<th style="width: 10%; border: 0;">ยกเลิก</th>
+
+
+					</tr>
+					{% for id in object_list %}
+					<tr>
+						<td style="width: 10%; border: 0; text-align: center; font-size: smaller;">{{id.name.count_invoice_number}} </td>
+						<td style="width: 5%; border: 0; text-align: center; font-size: smaller;">{{id.name.invoice_date|date:"d/m/y"}} </td>	
+						<td style="width: 10%; border: 0; text-align: center; font-size: smaller;">{{id.name.name}} </td>
+						<td style="width: 50%; border: 0; text-align: center; font-size: smaller;">{{id.product}} </td>
+						<td style="width: 5%; border: 0; text-align: center; font-size: smaller;">{{id.qty}} </td>	
+						<td style="width: 5%; border: 0; text-align: center; font-size: smaller;">{{id.sell_price|floatformat:2|intcomma}} </td>
+						<td style="width: 5%; border: 0; text-align: center; font-size: smaller;">{{id.sell_price|mul:id.qty|floatformat:2|intcomma}} </td>
+
+						{% if  id.name.cancel_inv == 'True' %}	 
+						<td style="width: 5%; border: 0; text-align: center; font-size: smaller; color: red;">ยกเลิก</td>
+						{% else %}
+						<td style="width: 5%; border: 0; text-align: center; font-size: smaller; color: green;">ปกติ</td>
+						{% endif %}      
+					</tr>
+					{% endfor %}
+					</table>
+		<div style="text-align: center;">
+			<div style="text-align: center;">
+				{% load filtersummary %}
+				{% if page_obj.has_other_pages %}
+			<ul class="pagination">
+			{% if page_obj.has_previous %}
+			  <li><a href="{% summary_url 1 'page' request.GET.urlencode %}"><i class="fas fa-angle-double-left"></i></a></li>
+			  <li><a href="{% summary_url page_obj.previous_page_number 'page' request.GET.urlencode %}"><i class="fas fa-angle-left"></i></a></li>
+			{% else %}
+			  <li class="disabled"><span><i class="fas fa-angle-double-left"></i></span></li>
+			  <li class="disabled"><span><i class="fas fa-angle-left"></i></span></li>
+			{% endif %}
+			{% for i in page_obj.paginator.page_range %}
+			  {% if page_obj.number == i %}
+				<li class="active"><span style="background-color:red;">{{ i }} <span class="sr-only">(current)</span></span></li>
+			  {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'4' %}
+			
+				<li><a href="{% summary_url i 'page' request.GET.urlencode %}">{{ i }}</a></li>
+			  {% endif %}
+			{% endfor %}
+			{% if page_obj.has_next %}
+			  <li><a href="{% summary_url page_obj.next_page_number 'page' request.GET.urlencode %}"><i class="fas fa-angle-right"></i></a></li>
+			  <li><a href="{% summary_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}"><i class="fas fa-angle-double-right"></i></i></a></li>
+			{% else %}
+			  <li class="disabled"><span><i class="fas fa-angle-right"></i></span></li>
+			  <li class="disabled"><span><i class="fas fa-angle-double-right"></i></i></span></li>
+			{% endif %}
+			</ul>
+			{% endif %}
+		</div>
+		<script src="{% static 'js/search/choices.js' %}"></script>
+		<script src="{% static 'js/search/flatpickr.js' %}"></script>
+		<script>
+		  flatpickr(".datepicker",
+		  {});
+	
+		</script>
+		<script>
+		  const choices = new Choices('[data-trigger]',
+		  {
+			searchEnabled: false,
+			itemSelectText: '',
+		  });
+	
+		</script>
+{% endblock %}

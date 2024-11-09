@@ -1,0 +1,124 @@
+{% load static %}
+{% load mathfilters %}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!DOCTYPE html>
+<html>
+<style>
+input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=date], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=submit] {
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+div {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+</style>
+<body>
+
+<div>
+  <form method="post">
+    {% csrf_token %}
+
+    {% if  new.status_create %}
+    <input type=checkbox name="status_create" value="checked" checked><label for="onprocess">เตรียมข้อมูล</label><br>
+    {% else %}
+    <input type=checkbox name="status_create" value="checked"><label for="onprocess">เตรียมข้อมูล</label><br>
+    {% endif %}
+
+    {% if  new.status_shopee %}
+    <input type=checkbox name="status_shopee" value="checked" checked><label for="onprocess">สถานะ shopee</label><br>
+    {% else %}
+    <input type=checkbox name="status_shopee" value="checked"><label for="onprocess">สถานะ shopee</label><br>
+    {% endif %}
+
+
+    {% if  new.status_lazada %}
+    <input type=checkbox name="status_lazada" value="checked" checked><label for="onprocess">สถานะ Lazada</label><br>
+    {% else %}
+    <input type=checkbox name="status_lazada" value="checked"><label for="onprocess">สถานะ Lazada</label><br>
+    {% endif %}
+
+    {% if  new.status_nocnoc %}
+    <input type=checkbox name="status_nocnoc" value="checked" checked><label for="onprocess">สถานะ Nocnoc</label><br>
+    {% else %}
+    <input type=checkbox name="status_nocnoc" value="checked"><label for="onprocess">สถานะ Nocnoc</label><br>
+    {% endif %}
+
+
+    {% if  new.status_tiktok %}
+    <input type=checkbox name="status_tiktok" value="checked" checked><label for="onprocess">สถานะ Tiktok</label><br>
+    {% else %}
+    <input type=checkbox name="status_tiktok" value="checked"><label for="onprocess">สถานะ Tiktok</label><br>
+    {% endif %}
+
+    {% if  new.status_mainweb %}
+    <input type=checkbox name="status_mainweb" value="checked" checked><label for="onprocess">สถานะ Mainweb</label><br>
+    {% else %}
+    <input type=checkbox name="status_mainweb" value="checked"><label for="onprocess">สถานะ Mainweb</label><br>
+    {% endif %}
+
+    {% if  new.vdo %}
+    <input type=checkbox name="vdo" value="checked" checked><label for="onprocess">สถานะ vdo</label><br>
+    {% else %}
+    <input type=checkbox name="vdo" value="checked"><label for="onprocess">สถานะ vdo</label><br>
+    {% endif %}
+
+    {% if  new.low_quality %}
+    <input type=checkbox name="low_quality" value="checked" checked><label for="onprocess">ไม่ผ่าน</label><br>
+    {% else %}
+    <input type=checkbox name="low_quality" value="checked"><label for="onprocess">ไม่ผ่าน</label><br>
+    {% endif %}
+
+
+    <label for="comment">หมายเหตุ</label>
+    {% if  new.comment %}
+    <input type="text" id="comment" name="comment" value="{{new.comment}}">
+    {% else %}
+    <input type="text" id="comment" name="comment" value="">
+    {% endif %} 
+    <label for="youtube_link">Youtube</label>
+    {% if  new.youtube_link %}
+    <input type="text" id="youtube_link" name="youtube_link" value="{{new.youtube_link}}">
+    {% else %}
+    <input type="text" id="youtube_link" name="youtube_link" value="">
+    {% endif %} 
+    <input type="hidden" name="next" value="{{ request.path }}">
+    <input type="submit" value="เก็บช้อมูล">
+  </form>
+</div>
+
+</body>
+</html>
